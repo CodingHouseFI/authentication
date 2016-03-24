@@ -9,7 +9,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var mongoose = require('mongoose');
-const mongoUrl = 'mongodb://localhost/introtoauth'
+const mongoUrl = 'mongodb://localhost/introtoauth';
 
 mongoose.connect(mongoUrl, function(err) {
   if(err) {
