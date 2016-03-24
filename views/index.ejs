@@ -6,9 +6,42 @@
 
     <script src="/bower_components/angular/angular.min.js"></script>
     <script src="/js/module.js"></script>
+    <script src="/js/controllers.js"></script>
+    <script src="/js/services.js"></script>
   </head>
   <body ng-app='userAuth'>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+
+    <form name='registrationForm'
+          ng-controller='registerCtrl'
+          novalidate ng-submit='register(regUser)'>
+      <h3>Register:</h3>
+      <div>
+        <label>Username:</label>
+        <input type="text" ng-model='regUser.username'>
+      </div>
+      <div>
+        <label>Password:</label>
+        <input type="password" ng-model='regUser.password'>
+      </div>
+      <button>Register!</button>
+    </form>
+
+    <form name='loginForm'
+          ng-controller='loginCtrl'
+          novalidate ng-submit='login(loginUser)'>
+      <h3>Login:</h3>
+      <div>
+        <label>Username:</label>
+        <input type="text" ng-model='loginUser.username'>
+      </div>
+      <div>
+        <label>Password:</label>
+        <input type="password" ng-model='loginUser.password'>
+      </div>
+      <button>Login!</button>
+    </form>
+
   </body>
 </html>
