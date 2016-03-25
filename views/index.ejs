@@ -13,6 +13,11 @@
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
 
+    <div ng-controller='testCtrl'>
+      <button ng-click='test()'>Test!</button>      
+    </div>
+
+
     <form name='registrationForm'
           ng-controller='registerCtrl'
           novalidate ng-submit='register(regUser)'>

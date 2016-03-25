@@ -13,6 +13,25 @@ var userSchema = new mongoose.Schema({
   password: { type: String, required: true }
 });
 
+userSchema.statics.authMiddleware = function(req, res, next) {
+  var token = req.cookies.cadecookie;
+  try {
+    var payload = jwt.decode(token, JWT_SECRET);
+  } catch(err) {
+    return res.clearCookie('cadecookie').status(401).send();
+  }
+  // we have a valid token
+
+  User.findById(payload.userId, function(err, user) {
+    if(err || !user) {
+      return res.clearCookie('cadecookie').status(401).send(err);
+    }
+    // the user exists!
+    req.user = user; // making the user document availble to the route
+    next(); // everything is good, and the request can continue
+  });
+};
+
 userSchema.statics.authenticate = function(userObj, cb) {
   User.findOne({username: userObj.username}, function(err, dbUser) {
     if(err || !dbUser) {
@@ -23,17 +42,12 @@ userSchema.statics.authenticate = function(userObj, cb) {
         return cb("Authentication failed.");
       }
 
-      // username and password are good and valid
-      // dbUser is the user loggin in
-
       var payload = {
         userId: dbUser._id,
         iat: Date.now()  // issued at time
       };
-
       // generate a token
       var token = jwt.encode(payload, JWT_SECRET);
-
       cb(null, token);
     });
   });
