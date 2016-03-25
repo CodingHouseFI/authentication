@@ -9,7 +9,10 @@ router.get('/', function(req, res) {
   });
 });
 
-// GET /users/profile
+router.delete('/logout', function(req, res) {
+  res.clearCookie('cadecookie').send();
+});
+
 router.get('/profile', User.authMiddleware, function(req, res) {
   res.send(req.user);
 });

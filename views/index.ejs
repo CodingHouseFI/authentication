@@ -3,10 +3,10 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/css/style.css' />
-
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
 
     <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="/js/module.js"></script>
     <script src="/js/controllers.js"></script>
     <script src="/js/services.js"></script>
@@ -15,7 +15,6 @@
 
     <nav ng-controller='navCtrl' class="navbar navbar-default navbar-static-top">
       <div class="container-fluid">
-        
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
             <span class="sr-only">Toggle navigation</span>
@@ -23,66 +22,31 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Angular</a>
+          <a class="navbar-brand" ui-sref="home">Angular</a>
         </div>
         
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
+            <li><a ui-sref='home'>Home</a></li>
+            <li><a ui-sref='login'>Login</a></li>
+            <li><a ui-sref='register'>Register</a></li>
             
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <span ng-show='username'>
-              <li>Hello {{username}}!</li>
-              <li>
-                <button type="button" class="btn btn-default navbar-btn">Log Out</button>
-              </li>
-            </span>
+            <li ng-show='username'>Hello {{username}}!</li>
+            <li ng-show='username'>
+              <button ng-click='logout()'
+                      type="button"
+                      class="btn btn-default navbar-btn">Log Out</button>
+            </li>
           </ul>
         </div>
       </div>
     </nav>
 
     <div class="container">
-      
-      <h1><%= title %></h1>
-      <p>Welcome to <%= title %></p>
-
-      <div ng-controller='testCtrl'>
-        <button ng-click='test()'>Test!</button>      
-      </div>
-
-
-      <form name='registrationForm'
-            ng-controller='registerCtrl'
-            novalidate ng-submit='register(regUser)'>
-        <h3>Register:</h3>
-        <div>
-          <label>Username:</label>
-          <input type="text" ng-model='regUser.username'>
-        </div>
-        <div>
-          <label>Password:</label>
-          <input type="password" ng-model='regUser.password'>
-        </div>
-        <button>Register!</button>
-      </form>
-
-      <form name='loginForm'
-            ng-controller='loginCtrl'
-            novalidate ng-submit='login(loginUser)'>
-        <h3>Login:</h3>
-        <div>
-          <label>Username:</label>
-          <input type="text" ng-model='loginUser.username'>
-        </div>
-        <div>
-          <label>Password:</label>
-          <input type="password" ng-model='loginUser.password'>
-        </div>
-        <button>Login!</button>
-      </form>
+      <ui-view></ui-view>
     </div>
-
 
   </body>
 </html>

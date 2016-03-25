@@ -17,6 +17,13 @@ app.service('AuthService', function($http, UserService) {
       });
   };
 
+  this.logout = function() {
+    $http.delete('/users/logout')
+    .then(function() {
+      UserService.destroy();
+    });
+  };
+
   this.init = function() {
     $http.get('/users/profile')
     .then(function(res) {

@@ -2,13 +2,25 @@
 
 var app = angular.module('userAuth');
 
-app.controller('navCtrl', function($scope, UserService) {
+app.controller('navCtrl', function($scope, UserService, AuthService) {
+
+  $scope.logout = function() {
+    AuthService.logout();
+  };
 
   $scope.$watch(function() {
     return UserService.username;
   }, function(username) {
     $scope.username = username;
   });
+});
+
+app.controller('authCtrl', function($scope, $state) {
+  $scope.state = $state.current.name;
+  $scope.submit = function() {
+    
+
+  };
 });
 
 app.controller('testCtrl', function($scope, $http) {

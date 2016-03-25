@@ -32,7 +32,6 @@ userSchema.statics.authMiddleware = function(req, res, next) {
   });
 };
 
-
 userSchema.methods.generateToken = function() {
   // `this` is the document you are calling the method on
   var payload = {
@@ -43,10 +42,7 @@ userSchema.methods.generateToken = function() {
   var token = jwt.encode(payload, JWT_SECRET);
   return token;
 };
-/*
-  schema.statics  --  model method (class method)   User.find()  User.authenticate()
-  schema.methods  --  instance method  (document method)  user.save()   user.generateToken()
-*/
+
 userSchema.statics.authenticate = function(userObj, cb) {
   User.findOne({username: userObj.username}, function(err, dbUser) {
     if(err || !dbUser) {
