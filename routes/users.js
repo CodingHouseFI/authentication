@@ -29,8 +29,13 @@ router.post('/authenticate', function(req, res) {
 });
 
 router.post('/register', function(req, res) {
-  User.register(req.body, function(err) {
-    res.status(err ? 400 : 200).send(err);
+  User.register(req.body, function(err, user) {
+    if(err) {
+      res.status(400).send(err);
+    } else {
+      var token = user.generateToken();
+      res.cookie('cadecookie', token).send(user);
+    }
   });
 });
 

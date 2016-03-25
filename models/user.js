@@ -66,8 +66,13 @@ userSchema.statics.register = function(userObj, cb) {
     User.create({
       username: userObj.username,
       password: hash
-    }, function(err) {
-      cb(err);
+    }, function(err, user) {
+      if(err) {
+        cb(err);
+      } else {
+        user.password = null;
+        cb(err, user);
+      }
     });
   });
 };
