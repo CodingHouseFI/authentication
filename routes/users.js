@@ -9,12 +9,18 @@ router.get('/', function(req, res) {
   });
 });
 
+// GET /users/profile
+router.get('/profile', User.authMiddleware, function(req, res) {
+  res.send(req.user);
+});
+
 router.post('/authenticate', function(req, res) {
-  User.authenticate(req.body, function(err, token) {
+  User.authenticate(req.body, function(err, user) {
     if(err) {
       res.status(400).send(err);
     } else {
-      res.cookie('cadecookie', token).send();
+      var token = user.generateToken();
+      res.cookie('cadecookie', token).send(user);
     }
   });
 });

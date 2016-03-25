@@ -2,6 +2,15 @@
 
 var app = angular.module('userAuth');
 
+app.controller('navCtrl', function($scope, UserService) {
+
+  $scope.$watch(function() {
+    return UserService.username;
+  }, function(username) {
+    $scope.username = username;
+  });
+});
+
 app.controller('testCtrl', function($scope, $http) {
   $scope.test = function() {
     $http.get('/protected')
@@ -13,9 +22,9 @@ app.controller('testCtrl', function($scope, $http) {
   }
 });
 
-app.controller('registerCtrl', function($scope, UserService) {
+app.controller('registerCtrl', function($scope, AuthService) {
   $scope.register = function(user) {
-    UserService.register(user)
+    AuthService.register(user)
       .then(function(res) {
         console.log('res:', res);
       }, function(err) {
@@ -24,13 +33,14 @@ app.controller('registerCtrl', function($scope, UserService) {
   };
 });
 
-app.controller('loginCtrl', function($scope, UserService) {
+app.controller('loginCtrl', function($scope, AuthService) {
   $scope.login = function(user) {
-    UserService.login(user)
-      .then(function(res) {
-        console.log('res:', res);
+    AuthService.login(user)
+      .then(function() {
+        // login was successul
+        // $state.go('profile');
       }, function(err) {
-        console.error(err);
+        console.log('controller err:', err);
       });
   }
 });

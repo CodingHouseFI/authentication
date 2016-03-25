@@ -22,7 +22,7 @@ userSchema.statics.authMiddleware = function(req, res, next) {
   }
   // we have a valid token
 
-  User.findById(payload.userId, function(err, user) {
+  User.findById(payload.userId).select({password: 0}).exec(function(err, user) {
     if(err || !user) {
       return res.clearCookie('cadecookie').status(401).send(err);
     }
@@ -32,6 +32,21 @@ userSchema.statics.authMiddleware = function(req, res, next) {
   });
 };
 
+
+userSchema.methods.generateToken = function() {
+  // `this` is the document you are calling the method on
+  var payload = {
+    userId: this._id,
+    iat: Date.now()  // issued at time
+  };
+  // generate a token
+  var token = jwt.encode(payload, JWT_SECRET);
+  return token;
+};
+/*
+  schema.statics  --  model method (class method)   User.find()  User.authenticate()
+  schema.methods  --  instance method  (document method)  user.save()   user.generateToken()
+*/
 userSchema.statics.authenticate = function(userObj, cb) {
   User.findOne({username: userObj.username}, function(err, dbUser) {
     if(err || !dbUser) {
@@ -41,14 +56,8 @@ userSchema.statics.authenticate = function(userObj, cb) {
       if(err || !isGood) {
         return cb("Authentication failed.");
       }
-
-      var payload = {
-        userId: dbUser._id,
-        iat: Date.now()  // issued at time
-      };
-      // generate a token
-      var token = jwt.encode(payload, JWT_SECRET);
-      cb(null, token);
+      dbUser.password = null;
+      cb(null, dbUser);
     });
   });
 };
